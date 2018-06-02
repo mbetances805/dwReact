@@ -1,12 +1,18 @@
+import ArticleDetail from '../src/articleDetail';
+import * as moment from 'moment';
+
 import React, { Component } from 'react';
 
 //Basic Article Component
 class Article extends Component {
-  constructor() {
+  constructor(props) {
     super(props);
 
     //initial state
-    this.state = {};
+    this.state = {
+      showSummary: false
+    };
+    this.toggleDetails = this.toggleDetails.bind(this);
   }
 
   //Component Lifecycle
@@ -23,15 +29,14 @@ class Article extends Component {
   }
   */
 
-
   static getDerivedStateFromProps(props, state) {
     console.log('get derived state from props');
     return null;
   }
 
   componentDidMount() {
-    console.log('component did mount');
   }
+  
   shouldComponentUpdate() {
     return true;
   }
@@ -45,6 +50,14 @@ class Article extends Component {
   componentWillUnmount() {
     console.log('component will unmount');
   }
+  
+  
+  //click handler for button
+  toggleDetails() {
+    this.setState((prevState, props) => (
+      {showSummary: !prevState.showSummary}
+    ))
+  }
 
   //this fires every time a prop or state changes
   //to use any prop, use this.props.NAME_OF_PROP
@@ -53,8 +66,29 @@ class Article extends Component {
   //remember that this is not HTML!!
   //https://reactjs.org/docs/introducing-jsx.html
   render() {
-    return <div>Hello World</div>;
-  }
+    const { headline, summary, image, link, byLine, publishedDate, subHeadline } = this.props;
+    const formattedDate = moment(publishedDate).format('MMMM DD')
+    return (
+    <React.Fragment>
+      <div className='home-article-date-published'>{formattedDate}</div>
+      <div
+        className='home-article'
+        onMouseEnter={this.toggleDetails}
+        onMouseLeave={this.toggleDetails}
+      >
+        <a href={link}>
+          <div className='home-article-headline'><span>{headline}</span></div>
+        </a>
+        <img className='home-article-image' src={image} alt='image' />
+      </div>
+      <ArticleDetail
+        summary={summary}
+        showSummary={this.state.showSummary}
+        byLine={byLine}
+        subHeadline={subHeadline}
+      />
+    </React.Fragment>
+  );}
 };
 
 //set default props here, if any

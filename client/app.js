@@ -1,28 +1,5 @@
 import React, { Component } from 'react';
-
-//import any other components here
-import HelloWorld from '../src/helloworld';
-
-//import CSS here, so webpack knows to include in bundle
-import style from '../client/style/main.css';
-
-//this is the component that generates the body of the page
-class App extends Component {
-
-  render() {
-    return (
-      <div>
-        <HelloWorld />
-      </div>
-    );
-  }
-}
-
-export default App;
-
-/* STEP 2, MORE COMPLICATED CODE FOLLOWS:
-
-import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 //import any other components here
 import HelloWorld from '../src/helloworld';
@@ -33,17 +10,17 @@ import style from '../client/style/main.css';
 
 //this is the component that generates the body of the page
 class App extends Component {
-  constructor() {
+  constructor(props) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
+    this.updateCategory = this.updateCategory.bind(this);
 
     //default state
     //this keeps track of "live" data on the browser
     this.state = {
       articles: null,
       error: null,
-      loaded: false
+      loaded: false,
+      selectedCategory: ''
     };
   }
 
@@ -70,17 +47,29 @@ class App extends Component {
     });
   }
 
-  //click handler for button
-  toggle() {
-    console.log('toggle button clicked');
+  // UPDATE
+  updateCategory(evt) {
+    this.setState({selectedCategory: evt.target.innerText})
+    let category = document.getElementById('active')
+    if (category) {
+      category.removeAttribute('id');
+    }
+    evt.target.setAttribute('id', 'active');
   }
-
+  
+  
   render() {
-    const {loaded, error, articles} = this.state;
+    const {loaded, error, articles, selectedCategory} = this.state;
     //  code above is equal to this:
     //  const loaded = this.state.loaded;
     //  const error = this.state.error;
     //  const articles = this.state.articles;
+    let categoriesSet = new Set();
+    articles && articles.map(article => {
+      categoriesSet.add(article.category)
+    })
+  
+    let key = 1;
 
     if (error) {
       //render this when there's error getting data
@@ -91,12 +80,21 @@ class App extends Component {
     } else {
       //render articles
       let articleJSX = [];
+      let filteredArticleJSX = [];
 
       articles.map((article, idx) => {
         articleJSX.push(
           <Article
             key={idx}
             headline={article.headline}
+            summary={article.summary}
+            image={article.image}
+            category={article.category}
+            subHeadline={article.subheadline}
+            byLine={article.byline}
+            publishedDate={article.date_published}
+            selectedCategory={selectedCategory}
+            link={article.share_link}
           />
         );
       });
@@ -106,14 +104,36 @@ class App extends Component {
       //     <Article key={i} headline={articles[i].headline}></Article>
       //   );
       // }
+      
+      if (this.state.selectedCategory) {
+        filteredArticleJSX = articleJSX.filter(article => {
+          return article.props.category === this.state.selectedCategory
+        })
+      }
 
       return (
-        <div>
-          <button onClick={this.toggle}>Toggle Something</button>
+        <React.Fragment>
           <HelloWorld />
-          <HelloWorld message="Hi!" />
-          {articleJSX}
-        </div>
+          <nav className='home-dropdown-category'>
+            <ul>
+              {
+                [...categoriesSet].sort().map(category => {return <li
+                  className='home-dropdown-content'
+                  key={category}
+                  onClick={this.updateCategory}
+                  >
+                    <Link to='/'>
+                    {category}
+                    </Link>
+                  </li>
+                })
+              }
+            </ul>
+          </nav>
+          <div className='app-container'>
+            {this.state.selectedCategory ? filteredArticleJSX : articleJSX}
+          </div>
+        </React.Fragment>
       );
 
     }
@@ -121,4 +141,3 @@ class App extends Component {
 }
 
 export default App;
-*/

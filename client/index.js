@@ -13,13 +13,16 @@ render(
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import {BrowserRouter} from 'react-router-dom'
 import App from './app';
 
 function renderApp() {
   render(
-    <AppContainer>
-      <App />
-    </AppContainer>,
+    <BrowserRouter>
+      <AppContainer>
+        <App />
+      </AppContainer>
+    </BrowserRouter>,
     document.getElementById('root')
   );
 };

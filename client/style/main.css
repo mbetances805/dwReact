@@ -1,5 +1,25 @@
-body {
-  background-color: #eee;
+html, body {
+  background-color: white;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px;
+  width: 100%;
+  height: 100%;
+}
+
+a:link {
+  color: black;
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .clicked {
@@ -12,4 +32,117 @@ body {
 
 .imagetest {
   background: url('../../assets/cyberman.jpg');
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 0.3fr 0.5fr 3fr 2fr 0.3fr;
+}
+
+.home-article {
+  grid-column: 3;
+  border-left: solid 1px lightgrey;
+  border-right: solid 1px lightgrey;
+  margin-top: 30px;
+  padding: 10px;
+  position: relative;
+}
+
+.home-article-headline {
+  position: absolute;
+  z-index: 1;
+  color: white;
+  width: 80%;
+  height: 80%;
+  padding: 20px;
+}
+
+.home-article-headline span {
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  top: 45%;
+  font-size: 24px;
+}
+
+.home-article-image {
+  width: 100%;
+  height: auto;
+  filter: brightness(40%);
+}
+
+.home-article-summary {
+  font-family: 'Sunflower', sans-serif;
+  grid-column: 4;
+  margin: auto;
+  padding: 10%;
+  font-size: 30px;
+}
+
+.home-article-subheadline {
+  display: block;
+  margin: auto;
+  grid-column: 4;
+  padding: 10%;
+}
+
+.home-article-subheadline span {
+  display: block;
+  font-weight: bold;
+  padding-top: 20px;
+}
+
+.home-article-date-published {
+  grid-column: 2;
+  margin-top: 50px;
+}
+
+.home-dropdown-category {
+  display: block;
+  font-size: 12px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.home-dropdown-content {
+  display: inline;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  list-style-type: none;
+}
+
+#active {
+  font-weight: bold;
+  color: darkblue;
+  font-size: 16px;
+}
+
+@media (max-width: 800px) {
+  .app-container {
+    grid-template-columns: 0.5fr 3fr;
+  }
+
+  .home-article {
+    grid-column: 2;
+  }
+  
+  .home-article-date-published {
+    grid-column: 1;
+    font-size: 12px;
+  }
+
+  .home-article-subheadline {
+    display: none;
+  }
+  
+  .home-dropdown-category {
+    display: none;
+  }
+  
+  .home-article-headline span{
+    width: 70%;
+    font-size: 1em;
+    top: 30%;
+  }
 }
